@@ -1,18 +1,23 @@
 import json
 from difflib import get_close_matches
 data = json.load(open("data.json"))
+def get_rid_ofList(x):
+	a = ""
+	for i in data[x]:
+		a += i + "\n"
+	return a
 def key_to_def(word):
 	word = word.lower() 
 	if data.get(word):
-		a = ""
-		answer = data.get(word)
-		for i in answer:
-			a += i + "\n"
-		return a
+		return get_rid_ofList(word)
+	elif word.title() in data:
+		return get_rid_ofList(word.title())
+	elif word.upper() in data:
+		return get_rid_ofList(word.upper())
 	elif len(get_close_matches(word,data.keys())) > 0:
 		h = input("Did you mean %s instead? (y or n)" % get_close_matches(word,data.keys())[0])
 		if h == "y":
-			return key_to_def(get_close_matches(word,data.keys())[0])
+			return get_rid_ofList(get_close_matches(word,data.keys())[0])
 		elif h == "n":
 			return "Error 404 not found"
 		else:
